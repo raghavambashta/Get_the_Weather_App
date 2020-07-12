@@ -2,10 +2,13 @@ package com.example.gettheweather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -35,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     TextView weatherTextView;
     TextView mainTextView;
     ImageView bgImageView;
+    ImageView loadImageView;
+    String showInfo = "";
+    String mainInfo = "";
+    String message = "";
 
     public void resetThings(View view)
     {
@@ -98,39 +105,48 @@ public class MainActivity extends AppCompatActivity {
                     String weatherInfo = jsonObject.getString("weather");
 
                     JSONArray arr = new JSONArray(weatherInfo);
-                    String message = "";
 
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject jsonPart = arr.getJSONObject(i);
 
-                        String mainInfo = jsonPart.getString("main");
+                        mainInfo = jsonPart.getString("main");
                         String descInfo = jsonPart.getString("description");
 
                         if (!mainInfo.equals("") && !descInfo.equals("")) {
                             message += mainInfo + ": " + descInfo;
 
-                            if(mainInfo.equals("Haze")){
-                                bgImageView.setImageResource(R.drawable.haze);
-                            }
-                            else if(mainInfo.equals("Clouds")){
-                                bgImageView.setImageResource(R.drawable.cloudy);
-                            }
-                            else if(mainInfo.equals("Clear")){
-                                bgImageView.setImageResource(R.drawable.clear);
-                            }
-                            else if(mainInfo.equals("Rain")){
-                                bgImageView.setImageResource(R.drawable.rainy);
-                            }
-                            else if(mainInfo.equals("Mist")){
-                                bgImageView.setImageResource(R.drawable.mist);
-                            }
-                        }
-                    }
+                            new CountDownTimer(1500,1000 ){
+                                @Override
+                                public void onTick(long l) {
 
-                    if (!message.equals("")) {
-                        weatherTextView.setText(message);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    if(mainInfo.equals("Haze")){
+                                        bgImageView.setImageResource(R.drawable.haze);
+                                    }
+                                    else if(mainInfo.equals("Clouds")){
+                                        bgImageView.setImageResource(R.drawable.cloudy);
+                                    }
+                                    else if(mainInfo.equals("Clear")){
+                                        bgImageView.setImageResource(R.drawable.clear);
+                                    }
+                                    else if(mainInfo.equals("Rain")){
+                                        bgImageView.setImageResource(R.drawable.rainy);
+                                    }
+                                    else if(mainInfo.equals("Mist")){
+                                        bgImageView.setImageResource(R.drawable.mist);
+                                    }
+                                    if (!message.equals("")) {
+                                        weatherTextView.setText(message);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }.start();
+
+                        }
                     }
 
                     String message1 = "";
@@ -143,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     while (m.find()) {
                         info.add(m.group(1).toString());
                     }
-                    String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temp(Min) : " + info.get(2) + "°C \r\n" + "Temp(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
+                    showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temp(Min) : " + info.get(2) + "°C \r\n" + "Temp(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
 
                     String windInfo = jsonObject.getString("wind");
                     String message2 = windInfo.toString();
@@ -153,7 +169,20 @@ public class MainActivity extends AppCompatActivity {
                         info.add(m.group(1).toString());
                         showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
                     }
-                    mainTextView.setText(showInfo);
+
+                    new CountDownTimer(1500,1000) {
+                        @Override
+                        public void onTick(long l) {
+                            loadImageView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            loadImageView.setVisibility(View.INVISIBLE);
+                            mainTextView.setText(showInfo);
+                        }
+                    }.start();
+
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
@@ -175,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         weatherTextView = (TextView)findViewById(R.id.weatherTextView);
         mainTextView = (TextView)findViewById(R.id.mainTextView);
         bgImageView = (ImageView) findViewById(R.id.bgImageView);
+        loadImageView = (ImageView) findViewById(R.id.loadImageView);
 
     }
 }

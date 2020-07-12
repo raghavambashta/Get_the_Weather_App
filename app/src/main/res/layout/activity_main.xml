@@ -138,5 +138,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/colImageView" />
 
+    <ImageView
+        android:id="@+id/loadImageView"
+        android:layout_width="128dp"
+        android:layout_height="119dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/load" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
