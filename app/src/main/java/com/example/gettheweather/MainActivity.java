@@ -23,11 +23,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText cityEditText;
     TextView weatherTextView;
+    TextView mainTextView;
 
     public void getWeather(View view)
     {
@@ -80,11 +84,10 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 JSONObject jsonObject = new JSONObject(s);
+
                 String weatherInfo = jsonObject.getString("weather");
-                Log.i("Weather : ",weatherInfo);
 
                 JSONArray arr = new JSONArray(weatherInfo);
-
                 String message = "";
 
                 for (int i = 0; i < arr.length(); i++)
@@ -93,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
                     String mainInfo = jsonPart.getString("main");
                     String descInfo = jsonPart.getString("description");
-
-                    Log.i("main : ", jsonPart.getString("main"));
-                    Log.i("description : ", jsonPart.getString("description"));
 
                     if(!mainInfo.equals("") && !descInfo.equals(""))
                     {
@@ -111,11 +111,32 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
                 }
+
+                String message1 = "";
+                String mainPartInfo = jsonObject.getString("main");
+                message1 = mainPartInfo.toString();
+                ArrayList<String> info = new ArrayList<String>();
+
+                Pattern p = Pattern.compile(":(.*?),");
+                Matcher m = p.matcher(message1);
+                while (m.find()) {
+                    info.add(m.group(1).toString());
+                }
+                String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temperature(Min) : " + info.get(2) + "°C \r\n" + "Temperature(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
+
+                String windInfo = jsonObject.getString("wind");
+                String message2 = windInfo.toString();
+                p = Pattern.compile(":(.*?),");
+                m = p.matcher(message1);
+                if (m.find()) {
+                    info.add(m.group(1).toString());
+                    showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
+                }
+                mainTextView.setText(showInfo);
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -126,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         cityEditText = (EditText)findViewById(R.id.cityEditText);
         weatherTextView = (TextView)findViewById(R.id.weatherTextView);
+        mainTextView = (TextView)findViewById(R.id.mainTextView);
 
     }
 }
