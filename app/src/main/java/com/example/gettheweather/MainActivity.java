@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView bgImageView;
     ImageView loadImageView;
     String showInfo = "";
-    String mainInfo = "";
     String message = "";
+    String copyMainInfo = "";
 
     public void resetThings(View view)
     {
@@ -49,10 +49,13 @@ public class MainActivity extends AppCompatActivity {
         weatherTextView.setText("");
         mainTextView.setText("");
         bgImageView.setImageResource(R.drawable.bg1);
+        copyMainInfo = "";
     }
 
     public void getWeather(View view)
     {
+        copyMainInfo = "";
+        message = "";
         try {
             DownloadTask task = new DownloadTask();
             String encodedCityName = URLEncoder.encode(cityEditText.getText().toString(), "UTF-8");
@@ -109,13 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject jsonPart = arr.getJSONObject(i);
 
-                        mainInfo = jsonPart.getString("main");
+                        String mainInfo = jsonPart.getString("main");
                         String descInfo = jsonPart.getString("description");
+
+                        copyMainInfo = mainInfo;
 
                         if (!mainInfo.equals("") && !descInfo.equals("")) {
                             message += mainInfo + ": " + descInfo;
 
-                            new CountDownTimer(1500,1000 ){
+                            new CountDownTimer(1000,1000 ){
                                 @Override
                                 public void onTick(long l) {
 
@@ -123,23 +128,27 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFinish() {
-                                    if(mainInfo.equals("Haze")){
+                                    if(copyMainInfo.equals("Haze")){
                                         bgImageView.setImageResource(R.drawable.haze);
                                     }
-                                    else if(mainInfo.equals("Clouds")){
+                                    else if(copyMainInfo.equals("Clouds")){
                                         bgImageView.setImageResource(R.drawable.cloudy);
                                     }
-                                    else if(mainInfo.equals("Clear")){
+                                    else if(copyMainInfo.equals("Clear")){
                                         bgImageView.setImageResource(R.drawable.clear);
                                     }
-                                    else if(mainInfo.equals("Rain")){
+                                    else if(copyMainInfo.equals("Rain")){
                                         bgImageView.setImageResource(R.drawable.rainy);
                                     }
-                                    else if(mainInfo.equals("Mist")){
+                                    else if(copyMainInfo.equals("Mist")){
                                         bgImageView.setImageResource(R.drawable.mist);
+                                    }
+                                    else if(copyMainInfo.equals("Drizzle")){
+                                        bgImageView.setImageResource(R.drawable.drizzle);
                                     }
                                     if (!message.equals("")) {
                                         weatherTextView.setText(message);
+                                        copyMainInfo = "";
                                     } else {
                                         Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
                                     }
@@ -170,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
                     }
 
-                    new CountDownTimer(1500,1000) {
+                    new CountDownTimer(1000,1000) {
                         @Override
                         public void onTick(long l) {
                             loadImageView.setVisibility(View.VISIBLE);
