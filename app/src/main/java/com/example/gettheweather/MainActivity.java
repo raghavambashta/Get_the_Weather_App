@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
     TextView weatherTextView;
     TextView mainTextView;
 
+    public void resetThings(View view)
+    {
+        cityEditText.setText("");
+        weatherTextView.setText("");
+        mainTextView.setText("");
+    }
+
     public void getWeather(View view)
     {
         try {

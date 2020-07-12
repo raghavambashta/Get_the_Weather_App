@@ -23,6 +23,8 @@
         android:id="@+id/getButton"
         android:layout_width="150dp"
         android:layout_height="51dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="68dp"
         android:background="@drawable/capsule_bg"
         android:onClick="getWeather"
@@ -31,8 +33,6 @@
         android:textSize="35sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/colImageView" />
 
@@ -120,6 +120,23 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getButton" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="150dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/capsule_bg"
+        android:onClick="resetThings"
+        android:text="RESET"
+        android:textColor="#F6DCA0"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/colImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
