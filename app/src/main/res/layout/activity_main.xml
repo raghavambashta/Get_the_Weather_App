@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/bgImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/bg1" />
+
+    <Button
+        android:id="@+id/getButton"
+        android:layout_width="150dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/capsule_bg"
+        android:onClick="getWeather"
+        android:text="GET!"
+        android:textColor="#F6DCA0"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/colImageView" />
+
+    <ImageView
+        android:id="@+id/colImageView"
+        android:layout_width="0dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:alpha="0.2"
+        android:background="#43EFCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bgImageView" />
+
+    <EditText
+        android:id="@+id/cityEditText"
+        android:layout_width="292dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter a city name ..."
+        android:inputType="textPersonName"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/colImageView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:alpha="0.65"
+        android:gravity="center"
+        android:text="Get the Weather!"
+        android:textColor="#094D83"
+        android:textSize="45sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bgImageView" />
+
+    <TextView
+        android:id="@+id/weatherTextView"
+        android:layout_width="403dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:textColor="#F1EDED"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:typeface="serif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
