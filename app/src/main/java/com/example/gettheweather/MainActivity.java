@@ -3,12 +3,14 @@ package com.example.gettheweather;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +34,14 @@ public class MainActivity extends AppCompatActivity {
     EditText cityEditText;
     TextView weatherTextView;
     TextView mainTextView;
+    ImageView bgImageView;
 
     public void resetThings(View view)
     {
         cityEditText.setText("");
         weatherTextView.setText("");
         mainTextView.setText("");
+        bgImageView.setImageResource(R.drawable.bg1);
     }
 
     public void getWeather(View view)
@@ -104,6 +108,22 @@ public class MainActivity extends AppCompatActivity {
 
                         if (!mainInfo.equals("") && !descInfo.equals("")) {
                             message += mainInfo + ": " + descInfo;
+
+                            if(mainInfo.equals("Haze")){
+                                bgImageView.setImageResource(R.drawable.haze);
+                            }
+                            else if(mainInfo.equals("Clouds")){
+                                bgImageView.setImageResource(R.drawable.cloudy);
+                            }
+                            else if(mainInfo.equals("Clear")){
+                                bgImageView.setImageResource(R.drawable.clear);
+                            }
+                            else if(mainInfo.equals("Rain")){
+                                bgImageView.setImageResource(R.drawable.rainy);
+                            }
+                            else if(mainInfo.equals("Mist")){
+                                bgImageView.setImageResource(R.drawable.mist);
+                            }
                         }
                     }
 
@@ -123,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     while (m.find()) {
                         info.add(m.group(1).toString());
                     }
-                    String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temperature(Min) : " + info.get(2) + "°C \r\n" + "Temperature(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
+                    String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temp(Min) : " + info.get(2) + "°C \r\n" + "Temp(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
 
                     String windInfo = jsonObject.getString("wind");
                     String message2 = windInfo.toString();
@@ -134,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
                         showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
                     }
                     mainTextView.setText(showInfo);
+
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -153,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         cityEditText = (EditText)findViewById(R.id.cityEditText);
         weatherTextView = (TextView)findViewById(R.id.weatherTextView);
         mainTextView = (TextView)findViewById(R.id.mainTextView);
+        bgImageView = (ImageView) findViewById(R.id.bgImageView);
 
     }
 }
