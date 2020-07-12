@@ -53,13 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
         }catch (Exception e)
         {
-            e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 
-    public class DownloadTask extends AsyncTask<String, Void, String >
-    {
+    public class DownloadTask extends AsyncTask<String, Void, String > {
 
         @Override
         protected String doInBackground(String... urls) {
@@ -72,14 +71,13 @@ public class MainActivity extends AppCompatActivity {
                 InputStream in = urlConnection.getInputStream();
                 InputStreamReader reader = new InputStreamReader(in);
                 int data = reader.read();
-                while (data != -1)
-                {
+                while (data != -1) {
                     char current = (char) data;
                     result = result + current;
                     data = reader.read();
                 }
-                return  result;
-            }catch (Exception e){
+                return result;
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -89,60 +87,60 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            try {
-                JSONObject jsonObject = new JSONObject(s);
+            if (s != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
 
-                String weatherInfo = jsonObject.getString("weather");
+                    String weatherInfo = jsonObject.getString("weather");
 
-                JSONArray arr = new JSONArray(weatherInfo);
-                String message = "";
+                    JSONArray arr = new JSONArray(weatherInfo);
+                    String message = "";
 
-                for (int i = 0; i < arr.length(); i++)
-                {
-                    JSONObject jsonPart = arr.getJSONObject(i);
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject jsonPart = arr.getJSONObject(i);
 
-                    String mainInfo = jsonPart.getString("main");
-                    String descInfo = jsonPart.getString("description");
+                        String mainInfo = jsonPart.getString("main");
+                        String descInfo = jsonPart.getString("description");
 
-                    if(!mainInfo.equals("") && !descInfo.equals(""))
-                    {
-                        message+= mainInfo + ": " + descInfo;
+                        if (!mainInfo.equals("") && !descInfo.equals("")) {
+                            message += mainInfo + ": " + descInfo;
+                        }
                     }
-                }
 
-                if(!message.equals(""))
-                {
-                    weatherTextView.setText(message);
-                }
-                else
-                {
+                    if (!message.equals("")) {
+                        weatherTextView.setText(message);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
+                    }
+
+                    String message1 = "";
+                    String mainPartInfo = jsonObject.getString("main");
+                    message1 = mainPartInfo.toString();
+                    ArrayList<String> info = new ArrayList<String>();
+
+                    Pattern p = Pattern.compile(":(.*?),");
+                    Matcher m = p.matcher(message1);
+                    while (m.find()) {
+                        info.add(m.group(1).toString());
+                    }
+                    String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temperature(Min) : " + info.get(2) + "°C \r\n" + "Temperature(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
+
+                    String windInfo = jsonObject.getString("wind");
+                    String message2 = windInfo.toString();
+                    p = Pattern.compile(":(.*?),");
+                    m = p.matcher(message1);
+                    if (m.find()) {
+                        info.add(m.group(1).toString());
+                        showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
+                    }
+                    mainTextView.setText(showInfo);
+                } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
                 }
-
-                String message1 = "";
-                String mainPartInfo = jsonObject.getString("main");
-                message1 = mainPartInfo.toString();
-                ArrayList<String> info = new ArrayList<String>();
-
-                Pattern p = Pattern.compile(":(.*?),");
-                Matcher m = p.matcher(message1);
-                while (m.find()) {
-                    info.add(m.group(1).toString());
-                }
-                String showInfo = "Temperature : " + info.get(0) + "°C \r\n" + "Feels Like : " + info.get(1) + "°C \r\n" + "Temperature(Min) : " + info.get(2) + "°C \r\n" + "Temperature(Max) : " + info.get(3) + "°C \r\n" + "Pressure : " + info.get(4) + " hpa \r\n";
-
-                String windInfo = jsonObject.getString("wind");
-                String message2 = windInfo.toString();
-                p = Pattern.compile(":(.*?),");
-                m = p.matcher(message1);
-                if (m.find()) {
-                    info.add(m.group(1).toString());
-                    showInfo = showInfo + "Wind : " + info.get(5) + "m/s";
-                }
-                mainTextView.setText(showInfo);
-            } catch (JSONException e) {
+            } else {
                 Toast.makeText(getApplicationContext(), "Could not find weather 🙁", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                resetThings(cityEditText);
             }
         }
     }
